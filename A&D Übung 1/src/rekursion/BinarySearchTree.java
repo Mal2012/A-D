@@ -1,6 +1,7 @@
 package rekursion;
 
 import java.util.Observable;
+import java.util.Vector;
 
 public class BinarySearchTree extends Observable {
 
@@ -11,7 +12,7 @@ public class BinarySearchTree extends Observable {
 	}
 
 	public BinarySearchTree(int key) {
-		root = new BinarySearchTreeNode(key);
+		root = new BinarySearchTreeNode(key, null);
 	}
 
 	public void initiate() {
@@ -56,7 +57,7 @@ public class BinarySearchTree extends Observable {
 
 	private void insert(BinarySearchTreeNode p, int key) {
 		if (root == null) {
-			root = new BinarySearchTreeNode(key);
+			root = new BinarySearchTreeNode(key, null);
 			this.setChanged();
 			this.notifyObservers();
 		} else if (key < p.key) {
@@ -93,13 +94,13 @@ public class BinarySearchTree extends Observable {
 	}
 
 	private void insertLeft(BinarySearchTreeNode p, int key) {
-		p.setLeft(new BinarySearchTreeNode(key));
+		p.setLeft(new BinarySearchTreeNode(key, p));
 		this.setChanged();
 		this.notifyObservers();
 	}
 
 	private void insertRight(BinarySearchTreeNode p, int key) {
-		p.setRight(new BinarySearchTreeNode(key));
+		p.setRight(new BinarySearchTreeNode(key, p));
 		this.setChanged();
 		this.notifyObservers();
 	}
@@ -111,6 +112,44 @@ public class BinarySearchTree extends Observable {
 		} else {
 			return "Found Key: " + temp;
 		}
+
+	}
+
+	public Vector<BinarySearchTreeNode> traverse(BinarySearchTreeNode node) {
+		Vector<BinarySearchTreeNode> nodes = new Vector<BinarySearchTreeNode>(
+				20);
+
+		nodes.add(node);
+		if (node.getLeft() != null)
+			nodes.addAll(traverse(node.getLeft()));
+		if (node.getRight() != null)
+			nodes.addAll(traverse(node.getRight()));
+
+		return nodes;
+	}
+
+	public void delete(int key) {
+		BinarySearchTreeNode temp = suche(root, key);
+		if (temp.getLeft() == null && temp.getRight() == null) {
+			delHelper(key, temp);
+		} else {
+			Vector<BinarySearchTreeNode> v = traverse(temp);
+			delHelper(key, temp);
+
+			for (BinarySearchTreeNode n : v) {
+				if (n.getKey() != key) {
+					this.insert(n.getKey());
+				}
+			}
+			System.out.println(v);
+		}
+	}
+
+	private void delHelper(int key, BinarySearchTreeNode temp) {
+		if (temp.getParent().getLeft() == temp)
+			temp.getParent().setLeft(null);
+		if (temp.getParent().getRight() == temp)
+			temp.getParent().setRight(null);
 
 	}
 

@@ -5,9 +5,19 @@ public class BinarySearchTreeNode {
 	protected int key;
 	protected BinarySearchTreeNode left;
 	protected BinarySearchTreeNode right;
+	protected BinarySearchTreeNode parent;
 
-	public BinarySearchTreeNode(int key) {
+	public BinarySearchTreeNode getParent() {
+		return parent;
+	}
+
+	public void setParent(BinarySearchTreeNode parent) {
+		this.parent = parent;
+	}
+
+	public BinarySearchTreeNode(int key, BinarySearchTreeNode p) {
 		this.setKey(key);
+		this.setParent(p);
 	}
 
 	@Override

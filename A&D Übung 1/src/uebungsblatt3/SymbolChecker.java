@@ -8,7 +8,6 @@ public class SymbolChecker {
 
 	public boolean check(String input) {
 		char[] cs = input.toCharArray();
-		boolean result = true;
 		for (int i = 0; i < cs.length; i++) {
 
 			switch (cs[i]) {
@@ -21,46 +20,42 @@ public class SymbolChecker {
 			case ')':
 				if (!s.isEmpty() && s.peek() == '(')
 					s.pop();
-				else
-					return false;
 				break;
 			case '}':
 				if (!s.isEmpty() && s.peek() == '{')
 					s.pop();
-				else
-					return false;
 				break;
-
 			case '/':
 				if (i + 1 < cs.length && cs[i + 1] == '*') {
-					s.push('*');
-				} else if (!s.isEmpty() && cs[i - 1] == s.peek()) {
-					s.pop();
-				} else {
-					return false;
+					s.push('/');
+					i++;
 				}
 				break;
-
+			case '*':
+				if (i + 1 < cs.length && cs[i + 1] == '/') {
+					i++;
+					if (!s.isEmpty())
+						if (s.peek() == '/')
+							s.pop();
+						else
+							return false;
+					else
+						return false;
+				}
+				break;
 			}
 
-			System.out.println(s);
-			if (!s.isEmpty()) {
-				result = false;
-			} else {
-				result = true;
-			}
 		}
-		return result;
+		return s.isEmpty();
 	}
 
 	public boolean checkRegex(String input) {
 		if (input.matches(".*?\\{(.*?)\\}.*?")
 				|| input.matches(".*?\\((.*?)\\).*?")
 				|| input.matches(".*?\\/\\*(.*?)\\*\\/.*?")) {
-			check(input);
+			return check(input);
 		} else {
 			return false;
 		}
-		return true;
 	}
 }
