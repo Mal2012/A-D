@@ -129,19 +129,23 @@ public class BinarySearchTree extends Observable {
 	}
 
 	public void delete(int key) {
-		BinarySearchTreeNode temp = suche(root, key);
-		if (temp.getLeft() == null && temp.getRight() == null) {
-			delHelper(key, temp);
-		} else {
-			Vector<BinarySearchTreeNode> v = traverse(temp);
-			delHelper(key, temp);
+		if (suche(root, key) != null) {
+			BinarySearchTreeNode temp = suche(root, key);
+			if (temp.getLeft() == null && temp.getRight() == null) {
+				delHelper(key, temp);
+			} else {
+				Vector<BinarySearchTreeNode> v = traverse(temp);
+				delHelper(key, temp);
 
-			for (BinarySearchTreeNode n : v) {
-				if (n.getKey() != key) {
-					this.insert(n.getKey());
+				for (BinarySearchTreeNode n : v) {
+					if (n.getKey() != key) {
+						this.insert(n.getKey());
+					}
 				}
+
 			}
-			System.out.println(v);
+			this.setChanged();
+			this.notifyObservers();
 		}
 	}
 
