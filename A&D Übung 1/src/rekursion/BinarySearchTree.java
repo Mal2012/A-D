@@ -129,27 +129,47 @@ public class BinarySearchTree extends Observable {
 	}
 
 	public void delete(int key) {
-		if (suche(root, key) != null) {
-			BinarySearchTreeNode temp = suche(root, key);
-			if (temp.getLeft() == null && temp.getRight() == null) {
-				delHelper(key, temp);
-			} else {
-				Vector<BinarySearchTreeNode> v = traverse(temp);
-				delHelper(key, temp);
 
-				for (BinarySearchTreeNode n : v) {
-					if (n.getKey() != key) {
-						this.insert(n.getKey());
+		if (suche(root, key) != null) {
+			if (suche(root, key) != root) {
+				BinarySearchTreeNode temp = suche(root, key);
+				if (temp.getLeft() == null && temp.getRight() == null) {
+					delHelper(key, temp);
+				} else {
+					Vector<BinarySearchTreeNode> v = traverse(temp);
+					delHelper(key, temp);
+
+					for (BinarySearchTreeNode n : v) {
+						if (n.getKey() != key) {
+							this.insert(n.getKey());
+						}
 					}
+
 				}
 
+			} else {
+				Vector<BinarySearchTreeNode> v = traverse(root);
+				root = null;
+				int counter = 0;
+				for (BinarySearchTreeNode n : v) {
+					if (n.getKey() != key) {
+						if (counter == 0) {
+							root = n;
+						}
+						this.insert(n.getKey());
+						counter++;
+					}
+
+				}
 			}
-			this.setChanged();
-			this.notifyObservers();
+
 		}
+		this.setChanged();
+		this.notifyObservers();
 	}
 
 	private void delHelper(int key, BinarySearchTreeNode temp) {
+
 		if (temp.getParent().getLeft() == temp)
 			temp.getParent().setLeft(null);
 		if (temp.getParent().getRight() == temp)
