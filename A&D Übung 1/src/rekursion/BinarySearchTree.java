@@ -168,6 +168,41 @@ public class BinarySearchTree extends Observable {
 		this.notifyObservers();
 	}
 
+	public void pfeifferDelete(int key) {
+		// Löschen eines Knotens mit zwei nachfolgern
+		// Suchen des Maximums im Linken Teilbaum des Knotens
+		// Ersetzen des zu Löschenden Knotens mit dem Maximum
+		// (Löschen des Maximums im Linken teilbaum
+
+		BinarySearchTreeNode temp = suche(root, key);
+		if (temp.getLeft() == null && temp.getRight() == null) {
+			delHelper(key, temp);
+		} else if (temp.getLeft() != null && temp.getRight() != null) {
+			BinarySearchTreeNode max = suchemax(temp.getLeft());
+			swapNodes(temp, max);
+		} else {
+
+		}
+		this.setChanged();
+		this.notifyObservers();
+	}
+
+	private void swapNodes(BinarySearchTreeNode temp, BinarySearchTreeNode max) {
+		BinarySearchTreeNode b = new BinarySearchTreeNode(0, null);
+		b.setKey(temp.getKey());
+		temp.setKey(max.getKey());
+		temp.setLeft(max.getLeft());
+	}
+
+	private BinarySearchTreeNode suchemax(BinarySearchTreeNode left) {
+		if (left.getRight() != null) {
+			return suchemax(left.getRight());
+		} else {
+			return left;
+		}
+
+	}
+
 	private void delHelper(int key, BinarySearchTreeNode temp) {
 
 		if (temp.getParent().getLeft() == temp)
