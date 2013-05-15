@@ -74,7 +74,7 @@ public class BinarySearchTreeView extends JFrame implements ActionListener {
 			input.setText("");
 			height.setText("Height: " + tree.height());
 			traverse.setText("Infix Order: " + tree.traverseInfix());
-			// System.out.println("Praefix:" + tree);
+			// System.out.println("Reverse:" + tree.traverseReverse());
 		} catch (NumberFormatException ex) {
 			input.setText("");
 			JOptionPane.showMessageDialog(null,

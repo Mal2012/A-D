@@ -16,16 +16,19 @@ public class BinarySearchTree extends Observable {
 	}
 
 	public void initiate() {
-		this.insert(34);
-		this.insert(33);
-		this.insert(2);
-		this.insert(1);
+		this.insert(5);
+		this.insert(20);
+		this.insert(8);
+		this.insert(10);
+		this.insert(9);
+		this.insert(12);
+		this.insert(7);
+		this.insert(22);
 		this.insert(3);
-		this.insert(66);
-		this.insert(78);
-		this.insert(89);
-		this.insert(90);
-		this.insert(99);
+		this.insert(14);
+		this.insert(4);
+		this.insert(13);
+		this.insert(6);
 	}
 
 	public boolean isEmpty() {
@@ -79,14 +82,30 @@ public class BinarySearchTree extends Observable {
 
 	}
 
+	public String traverseReverse() {
+		return traverseReverse(root);
+
+	}
+
 	private String traverseInfix(BinarySearchTreeNode node) {
 		String s = "";
-
 		if (node.getLeft() != null)
 			s += traverseInfix(node.getLeft());
 		s += " " + node.toString();
 		if (node.getRight() != null)
 			s += traverseInfix(node.getRight());
+		s += " ";
+		return s;
+	}
+
+	private String traverseReverse(BinarySearchTreeNode node) {
+		String s = "";
+
+		if (node.getRight() != null)
+			s += traverseReverse(node.getRight());
+		s += " " + node.toString();
+		if (node.getLeft() != null)
+			s += traverseReverse(node.getLeft());
 
 		s += " ";
 
