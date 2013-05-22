@@ -194,13 +194,19 @@ public class BinarySearchTree extends Observable {
 		// (Löschen des Maximums im Linken teilbaum
 
 		BinarySearchTreeNode temp = suche(root, key);
+
 		if (temp.getLeft() == null && temp.getRight() == null) {
 			delHelper(key, temp);
 		} else if (temp.getLeft() != null && temp.getRight() != null) {
 			BinarySearchTreeNode max = suchemax(temp.getLeft());
 			swapNodes(temp, max);
 		} else {
-
+			if (temp.getLeft() != null) {
+				swapNodes(temp, temp.getLeft());
+			}
+			if (temp.getRight() != null) {
+				swapRightNodes(temp, temp.getRight());
+			}
 		}
 		this.setChanged();
 		this.notifyObservers();
@@ -210,6 +216,15 @@ public class BinarySearchTree extends Observable {
 		BinarySearchTreeNode b = new BinarySearchTreeNode(0, null);
 		b.setKey(temp.getKey());
 		temp.setKey(max.getKey());
+		temp.setLeft(max.getLeft());
+	}
+
+	private void swapRightNodes(BinarySearchTreeNode temp,
+			BinarySearchTreeNode max) {
+		BinarySearchTreeNode b = new BinarySearchTreeNode(0, null);
+		b.setKey(temp.getKey());
+		temp.setKey(max.getKey());
+		temp.setRight(max.getRight());
 		temp.setLeft(max.getLeft());
 	}
 
