@@ -20,7 +20,7 @@ public class BinarySearchTreeView extends JFrame {
 	private JTextField input, deleteinput;
 	private BinarySearchTree tree;
 	private BinarySearchTreeViewView view;
-	private JLabel key, height, traverse, delete, avl, complete;
+	private JLabel key, height, traverse, delete, avl, complete, leaf;
 
 	public BinarySearchTreeView(String s, BinarySearchTree tree) {
 		super(s);
@@ -37,6 +37,7 @@ public class BinarySearchTreeView extends JFrame {
 		traverse = new JLabel("Infix order: " + getTree().traverseInfix());
 		avl = new JLabel("isAVL: " + getTree().isAVL());
 		complete = new JLabel("isComplete: " + getTree().isComplete());
+		leaf = new JLabel(" Leaves: " + getTree().isLeaf());
 		delete = new JLabel("Delete: ");
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(1, 3));
@@ -44,6 +45,7 @@ public class BinarySearchTreeView extends JFrame {
 		panel.add(input);
 		panel.add(delete);
 		panel.add(deleteinput);
+		panel.add(leaf);
 		panel.add(height);
 		panel.add(avl);
 		panel.add(complete);
@@ -103,6 +105,7 @@ public class BinarySearchTreeView extends JFrame {
 		traverse.setText("Infix Order: " + getTree().traverseInfix());
 		avl.setText("isAVL: " + getTree().isAVL());
 		complete.setText("isComplete: " + getTree().isComplete());
+		leaf.setText(" Leaves: " + getTree().isLeaf());
 	}
 
 	public BinarySearchTree getTree() {

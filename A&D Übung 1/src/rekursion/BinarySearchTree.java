@@ -315,4 +315,19 @@ public class BinarySearchTree extends Observable {
 		return height(root) + 1;
 	}
 
+	public int isLeaf() {
+		return isLeaf(root);
+	}
+
+	private int isLeaf(BinarySearchTreeNode root2) {
+		if (root2 == null) {
+			return 0;
+		} else if (root2.getLeft() == null && root2.getRight() == null) {
+			return 1;
+		} else {
+
+			return isLeaf(root2.getLeft()) + isLeaf(root2.getRight());
+		}
+	}
+
 }
