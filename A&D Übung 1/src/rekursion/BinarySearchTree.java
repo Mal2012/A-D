@@ -19,16 +19,16 @@ public class BinarySearchTree extends Observable {
 		this.insert(5);
 		this.insert(20);
 		this.insert(8);
-		this.insert(10);
-		this.insert(9);
-		this.insert(12);
-		this.insert(7);
-		this.insert(22);
-		this.insert(3);
-		this.insert(14);
-		this.insert(4);
-		this.insert(13);
-		this.insert(6);
+		// this.insert(10);
+		// this.insert(9);
+		// this.insert(12);
+		// this.insert(7);
+		// this.insert(22);
+		// this.insert(3);
+		// this.insert(14);
+		// this.insert(4);
+		// this.insert(13);
+		// this.insert(6);
 	}
 
 	public boolean isEmpty() {
