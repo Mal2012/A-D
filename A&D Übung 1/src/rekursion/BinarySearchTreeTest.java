@@ -14,7 +14,7 @@ public class BinarySearchTreeTest {
 		bt.insert(6);
 		bt.insert(1);
 		System.out.println(bt);
-		bt.pfeifferDelete(10);
+		bt.konstantindelete(10);
 
 		System.out.println(bt);
 	}

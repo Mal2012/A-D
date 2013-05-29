@@ -35,7 +35,7 @@ public class BinarySearchTreeView extends JFrame {
 		key = new JLabel("Insert Key:");
 		height = new JLabel("Height: " + getTree().height());
 		traverse = new JLabel("Infix order: " + getTree().traverseInfix());
-		avl = new JLabel("isAVL: " + getTree().isAVL(tree.root));
+		avl = new JLabel("isAVL: " + getTree().isAVL());
 		complete = new JLabel("isComplete: " + getTree().isComplete());
 		leaf = new JLabel(" Leaves: " + getTree().isLeaf());
 		nodes = new JLabel(" Nodes: " + getTree().isNode());
@@ -54,7 +54,7 @@ public class BinarySearchTreeView extends JFrame {
 
 		panel.setBounds(10, 10, 75, 550);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(800, 600);
+		setSize(950, 600);
 
 		Container c = getContentPane();
 		c.setLayout(new BorderLayout());
@@ -66,7 +66,8 @@ public class BinarySearchTreeView extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				try {
-					getTree().delete(Integer.parseInt(deleteinput.getText()));
+					getTree().konstantindelete(
+							Integer.parseInt(deleteinput.getText()));
 					deleteinput.setText("");
 					refresh();
 				} catch (NumberFormatException ex) {
@@ -105,7 +106,7 @@ public class BinarySearchTreeView extends JFrame {
 	public void refresh() {
 		height.setText("Height: " + getTree().height());
 		traverse.setText("Infix Order: " + getTree().traverseInfix());
-		avl.setText("isAVL: " + getTree().isAVL(tree.root));
+		avl.setText("isAVL: " + getTree().isAVL());
 		complete.setText("isComplete: " + getTree().isComplete());
 		leaf.setText(" Leaves: " + getTree().isLeaf());
 		nodes.setText(" Nodes: " + getTree().isNode());

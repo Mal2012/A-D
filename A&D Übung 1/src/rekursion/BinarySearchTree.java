@@ -78,12 +78,18 @@ public class BinarySearchTree extends Observable {
 	}
 
 	public String traverseInfix() {
-		return traverseInfix(root);
+		if (root != null)
+			return traverseInfix(root);
+		else
+			return null;
 
 	}
 
 	public String traverseReverse() {
-		return traverseReverse(root);
+		if (root != null)
+			return traverseReverse(root);
+		else
+			return null;
 
 	}
 
@@ -187,45 +193,131 @@ public class BinarySearchTree extends Observable {
 		this.notifyObservers();
 	}
 
-	public void pfeifferDelete(int key) {
-		// Löschen eines Knotens mit zwei nachfolgern
-		// Suchen des Maximums im Linken Teilbaum des Knotens
-		// Ersetzen des zu Löschenden Knotens mit dem Maximum
-		// (Löschen des Maximums im Linken teilbaum
+	private BinarySearchTreeNode searchMax(BinarySearchTreeNode node) {
 
-		BinarySearchTreeNode temp = suche(root, key);
+		if (node.getRight() == null)
+			return node;
+		else
+			return searchMax(node.getRight());
+	}
 
-		if (temp.getLeft() == null && temp.getRight() == null) {
-			delHelper(key, temp);
-		} else if (temp.getLeft() != null && temp.getRight() != null) {
-			BinarySearchTreeNode max = suchemax(temp.getLeft());
-			swapNodes(temp, max);
-		} else {
-			if (temp.getLeft() != null) {
-				swapNodes(temp, temp.getLeft());
-			}
-			if (temp.getRight() != null) {
-				swapRightNodes(temp, temp.getRight());
+	public BinarySearchTreeNode searchMax(int key) {
+
+		if (this.suche(root, key).getLeft() != null)
+			return searchMax((this.suche(root, key)).getLeft());
+		else
+			return null;
+	}
+
+	private void konstantindelete(BinarySearchTreeNode node) {
+
+		/**
+		 * Fall I : Knoten ist die Wurzel [ d.h. parent = null]
+		 */
+		if (node == this.root) {
+			BinarySearchTreeNode tmp = this.root;
+			/**
+			 * Fall I.a : Wurzel hat keine Blätter
+			 */
+			if (this.root.getLeft() == null && this.root.getRight() == null)
+				this.root = null;
+			/**
+			 * Fall II.a : Wurzel hat nur linkes Blatt
+			 */
+			else if (this.root.getLeft() != null
+					&& this.root.getRight() == null)
+				this.root = tmp.getLeft();
+			/**
+			 * Fall II.b : Wurzel hat nur rechtes Blatt
+			 */
+			else if (this.root.getLeft() == null
+					&& this.root.getRight() != null)
+				this.root = tmp.getRight();
+			/**
+			 * Fall III.a : Wurzel hat zwei Blätter
+			 */
+			else if (this.root.getLeft() != null
+					&& this.root.getRight() != null) {
+				BinarySearchTreeNode q = searchMax(this.root.getKey());
+				konstantindelete(q.getKey());
+				this.root.setKey(q.getKey());
 			}
 		}
+		/**
+		 * Fall II : Knoten ist keine Wurzel [d.h. hat Elternknoten != null]
+		 */
+		else if (node != this.root) {
+			/**
+			 * Fall I.a : Wurzel hat keine Blätter
+			 */
+			if (node.getLeft() == null && node.getRight() == null) {
+				if (searchParent(node.getKey()).getKey() < node.getKey())
+					searchParent(node.getKey()).setRight(null);
+				else if (searchParent(node.getKey()).getKey() > node.getKey())
+					searchParent(node.getKey()).setLeft(null);
+			}
+			/**
+			 * Fall II.a : Wurzel hat nur linkes Blatt
+			 */
+			else if (node.getLeft() != null && node.getRight() == null) {
+				if (searchParent(node.getKey()).getKey() < node.getKey())
+					searchParent(node.getKey()).setRight(node.getLeft());
+				else
+					searchParent(node.getKey()).setLeft(node.getLeft());
+				/**
+				 * Fall II.b : Wurzel hat nur rechtes Blatt
+				 */
+			} else if (node.getLeft() == null & node.getRight() != null) {
+				if (searchParent(node.getKey()).getKey() < node.getKey())
+					searchParent(node.getKey()).setRight(node.getRight());
+				else
+					searchParent(node.getKey()).setLeft(node.getRight());
+			}
+			/**
+			 * Fall III.a : Wurzel hat zwei Blätter 1. Suche maxKey im TB d.
+			 * löschenden Knoten [rightChild = null] 2. lösche d. Knoten aus dem
+			 * Baum 3. Ersetze den Wert d. löschenden Knoten mit maxKey
+			 */
+			else if (node.getLeft() != null && node.getRight() != null
+					&& node != this.root) {
+				BinarySearchTreeNode q = searchMax(node.getKey());
+
+				konstantindelete(q.getKey());
+				node.setKey(q.getKey());
+			}
+		}
+	}
+
+	public void konstantindelete(int key) {
+
+		if (suche(root, key) != null)
+			konstantindelete(suche(root, key));
+
 		this.setChanged();
 		this.notifyObservers();
 	}
 
-	private void swapNodes(BinarySearchTreeNode temp, BinarySearchTreeNode max) {
-		BinarySearchTreeNode b = new BinarySearchTreeNode(0, null);
-		b.setKey(temp.getKey());
-		temp.setKey(max.getKey());
-		temp.setLeft(max.getLeft());
+	private BinarySearchTreeNode searchParent(BinarySearchTreeNode node, int key) {
+
+		if (node == null)
+			return null;
+		else if (key < node.getKey())
+			if (node.getLeft().getKey() == key)
+				return node;
+			else
+				return searchParent(node.getLeft(), key);
+		else if (key > node.getKey())
+			if (node.getRight().getKey() == key)
+				return node;
+			else
+				return searchParent(node.getRight(), key);
+		else
+			return null;
 	}
 
-	private void swapRightNodes(BinarySearchTreeNode temp,
-			BinarySearchTreeNode max) {
-		BinarySearchTreeNode b = new BinarySearchTreeNode(0, null);
-		b.setKey(temp.getKey());
-		temp.setKey(max.getKey());
-		temp.setRight(max.getRight());
-		temp.setLeft(max.getLeft());
+	public BinarySearchTreeNode searchParent(int key) {
+
+		return searchParent(this.root, key);
 	}
 
 	private BinarySearchTreeNode suchemax(BinarySearchTreeNode left) {
@@ -281,7 +373,14 @@ public class BinarySearchTree extends Observable {
 		return s;
 	}
 
-	public boolean isAVL(BinarySearchTreeNode node) {
+	public boolean isAVL() {
+		if (root != null)
+			return isAVL(root);
+		else
+			return false;
+	}
+
+	private boolean isAVL(BinarySearchTreeNode node) {
 		/*
 		 * if (this.height(root.getLeft()) == this.height(root.getRight())) {
 		 * return true; } else if (this.height(root.getLeft()) + 1 ==
@@ -307,7 +406,10 @@ public class BinarySearchTree extends Observable {
 	}
 
 	public boolean isComplete() {
-		return isComplete(root, 0);
+		if (root != null)
+			return isComplete(root, 0);
+		else
+			return false;
 	}
 
 	private boolean isComplete(BinarySearchTreeNode node, int stufe) {
@@ -344,7 +446,10 @@ public class BinarySearchTree extends Observable {
 	}
 
 	public int isNode() {
-		return isNode(root) + 1;
+		if (root != null)
+			return isNode(root) + 1;
+		else
+			return 0;
 	}
 
 	public int isNode(BinarySearchTreeNode node) {
