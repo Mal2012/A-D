@@ -281,16 +281,29 @@ public class BinarySearchTree extends Observable {
 		return s;
 	}
 
-	public boolean isAVL() {
-		if (this.height(root.getLeft()) == this.height(root.getRight())) {
-			return true;
-		} else if (this.height(root.getLeft()) + 1 == this.height(root
-				.getRight())) {
-			return true;
-		} else if (this.height(root.getLeft()) == this.height(root.getRight()) + 1) {
-			return true;
-		}
-		return false;
+	public boolean isAVL(BinarySearchTreeNode node) {
+		/*
+		 * if (this.height(root.getLeft()) == this.height(root.getRight())) {
+		 * return true; } else if (this.height(root.getLeft()) + 1 ==
+		 * this.height(root .getRight())) { return true; } else if
+		 * (this.height(root.getLeft()) == this.height(root.getRight()) + 1) {
+		 * return true; } return false;
+		 */
+
+		if (node.getLeft() != null && !isAVL(node.getLeft()))
+			return false;
+		if (node.getRight() != null && !isAVL(node.getRight()))
+			return false;
+		int left = 0;
+		int right = 0;
+		if (node.getLeft() != null)
+			left = height(node.getLeft()) + 1;
+		if (node.getRight() != null)
+			right = height(node.getRight()) + 1;
+		left -= right;
+		left = left < 0 ? -left : left;
+		return left <= 1;
+
 	}
 
 	public boolean isComplete() {
@@ -299,7 +312,7 @@ public class BinarySearchTree extends Observable {
 
 	private boolean isComplete(BinarySearchTreeNode node, int stufe) {
 
-		if (stufe != this.height() - 1) {
+		if (stufe != this.height() - 2) {
 			if (node.getLeft() != null && node.getRight() != null) {
 				return isComplete(node.getLeft(), stufe + 1)
 						&& isComplete(node.getRight(), stufe + 1);
@@ -328,6 +341,26 @@ public class BinarySearchTree extends Observable {
 
 			return isLeaf(root2.getLeft()) + isLeaf(root2.getRight());
 		}
+	}
+
+	public int isNode() {
+		return isNode(root) + 1;
+	}
+
+	public int isNode(BinarySearchTreeNode node) {
+		int left = 0;
+		int right = 0;
+		int result = 0;
+		if (node.getLeft() != null) {
+			left += isNode(node.getLeft());
+			left++;
+		}
+		if (node.getRight() != null) {
+			right += isNode(node.getRight());
+			right++;
+		}
+		result = left + right;
+		return result;
 	}
 
 }

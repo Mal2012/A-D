@@ -20,7 +20,7 @@ public class BinarySearchTreeView extends JFrame {
 	private JTextField input, deleteinput;
 	private BinarySearchTree tree;
 	private BinarySearchTreeViewView view;
-	private JLabel key, height, traverse, delete, avl, complete, leaf;
+	private JLabel key, height, traverse, delete, avl, complete, leaf, nodes;
 
 	public BinarySearchTreeView(String s, BinarySearchTree tree) {
 		super(s);
@@ -35,9 +35,10 @@ public class BinarySearchTreeView extends JFrame {
 		key = new JLabel("Insert Key:");
 		height = new JLabel("Height: " + getTree().height());
 		traverse = new JLabel("Infix order: " + getTree().traverseInfix());
-		avl = new JLabel("isAVL: " + getTree().isAVL());
+		avl = new JLabel("isAVL: " + getTree().isAVL(tree.root));
 		complete = new JLabel("isComplete: " + getTree().isComplete());
 		leaf = new JLabel(" Leaves: " + getTree().isLeaf());
+		nodes = new JLabel(" Nodes: " + getTree().isNode());
 		delete = new JLabel("Delete: ");
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(1, 3));
@@ -46,6 +47,7 @@ public class BinarySearchTreeView extends JFrame {
 		panel.add(delete);
 		panel.add(deleteinput);
 		panel.add(leaf);
+		panel.add(nodes);
 		panel.add(height);
 		panel.add(avl);
 		panel.add(complete);
@@ -103,9 +105,10 @@ public class BinarySearchTreeView extends JFrame {
 	public void refresh() {
 		height.setText("Height: " + getTree().height());
 		traverse.setText("Infix Order: " + getTree().traverseInfix());
-		avl.setText("isAVL: " + getTree().isAVL());
+		avl.setText("isAVL: " + getTree().isAVL(tree.root));
 		complete.setText("isComplete: " + getTree().isComplete());
 		leaf.setText(" Leaves: " + getTree().isLeaf());
+		nodes.setText(" Nodes: " + getTree().isNode());
 	}
 
 	public BinarySearchTree getTree() {
